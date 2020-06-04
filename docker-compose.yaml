@@ -1,0 +1,19 @@
+version: "3"
+services:
+  redis:
+    image: "redis:alpine"
+  publisher:
+    build: ./publisher
+    ports:
+      - "5000:5000"
+    environment:
+      FLASK_ENV: development
+    volumes:
+      - ./publisher:/usr/src/publisher
+    depends_on:
+      - redis
+      - subscriber
+  subscriber:
+    build: ./subscriber
+    depends_on:
+      - redis
